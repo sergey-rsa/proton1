@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: CloudFormation template to create an IAM role with a policy that grants S3 and IAM access.
+
+Resources:
+  MyIAMRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com" # Trust relationship for EC2 service
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      RoleName: "MyExampleRole"
+      ManagedPolicyArns:
+        - !Ref MyIAMPolicy
+
+  MyIAMPolicy:
+    Type: "AWS::IAM::ManagedPolicy"
+    Properties:
+      PolicyName: "MyExamplePolicy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action:
+              - "s3:GetObject"
+              - "s3:ListBucket"
+              - "s3:PutObject"
+              - "s3:DeleteObject"
+            Resource:
+              - "arn:aws:s3:::example-bucket"
+              - "arn:aws:s3:::example-bucket/*"
+          - Effect: "Allow"
+            Action:
+              - "iam:ListUsers"
+              - "iam:GetUser"
+              - "iam:CreateUser"
+              - "iam:DeleteUser"
+            Resource:
+              - "*"
+
+Outputs:
+  RoleName:
+    Description: "The name of the IAM role"
+    Value: !Ref MyIAMRole
+  RoleArn:
+    Description: "The ARN of the IAM role"
+    Value: !GetAtt MyIAMRole.Arn
+  PolicyName:
+    Description: "The name of the IAM policy"
+    Value: !Ref MyIAMPolicy
