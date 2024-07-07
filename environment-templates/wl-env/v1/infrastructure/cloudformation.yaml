@@ -10,19 +10,39 @@ Resources:
         Statement:
           - Effect: "Allow"
             Principal:
-              Service:
-                - "ec2.amazonaws.com"
-            Action:
-              - "sts:AssumeRole"
+              Federated: "arn:aws:iam::471112521381:oidc-provider/api.bitbucket.org/2.0/workspaces/drl_admin/pipelines-config/identity/oidc"
+            Action: "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringLike:
+                "api.bitbucket.org/2.0/workspaces/drl_admin/pipelines-config/identity/oidc:sub":
+                  - "{c8b2ab78-e062-4a40-aa88-4bd21e900f08}:*"
+                  - "{c8b2ab78-e062-4a40-aa88-4bd21e900f07}:*"
+              IpAddress:
+                "aws:SourceIp":
+                  - "34.199.54.113/32"
+                  - "34.232.25.90/32"
+                  - "34.232.119.183/32"
+                  - "34.236.25.177/32"
+                  - "35.171.175.212/32"
+                  - "52.54.90.98/32"
+                  - "52.202.195.162/32"
+                  - "52.203.14.55/32"
+                  - "52.204.96.37/32"
+                  - "34.218.156.209/32"
+                  - "34.218.168.212/32"
+                  - "52.41.219.63/32"
+                  - "35.155.178.254/32"
+                  - "35.160.177.10/32"
+                  - "34.216.18.129/32"
       Path: "/"
       RoleName: "MyExampleRole"
-      ManagedPolicyArns:
-        - !Ref MyIAMPolicy
 
   MyIAMPolicy:
-    Type: "AWS::IAM::ManagedPolicy"
+    Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: "MyExamplePolicy"
+      Roles:
+        - Ref: MyIAMRole
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
