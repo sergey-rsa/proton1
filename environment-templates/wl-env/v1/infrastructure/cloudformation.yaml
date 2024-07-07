@@ -17,6 +17,7 @@ Resources:
                 "api.bitbucket.org/2.0/workspaces/drl_admin/pipelines-config/identity/oidc:sub":
                   - "{c8b2ab78-e062-4a40-aa88-4bd21e900f08}:*"
                   - "{c8b2ab78-e062-4a40-aa88-4bd21e900f07}:*"
+                  - "{c8b2ab78-e062-4a40-aa88-4bd21e900f06}:*"
               IpAddress:
                 "aws:SourceIp":
                   - "34.199.54.113/32"
