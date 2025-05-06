@@ -6,7 +6,7 @@
   properties:
     readme: string
     url: https://example.com
-    language: string
+    language: HCL
     slack: https://example.com
     tier: Mission Critical
   relations: {}
